@@ -1,5 +1,10 @@
+let allHex = []
+let allBtn = []
+
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const btnContainer = document.getElementById("btnContainer")
 
 const a = 2 * Math.PI / 6;
 const r = 75;
@@ -20,8 +25,6 @@ class Hexagon {
   }
 }
 
-let allHex = []
-
 function createHex(hex){
   hex.draw(ctx)
 }
@@ -29,7 +32,7 @@ function createHex(hex){
 function drawHex(){
   let x = 0
   let y = 100
-  //top row
+  // #region region Hex Math
   for(let i = 0; i < 3; i++){
     x = 500
     y += 92
@@ -64,11 +67,40 @@ function drawHex(){
     let new_hex = new Hexagon(x*1.5, y*1.5)
     allHex.push(new_hex)
   }
-
-  console.log(y)
+  // #endregion
   allHex.forEach(hex => {
     createHex(hex)
   })
 }
 
+class Button {
+  constructor(posX, posY, buttonId) {
+    this.posX = posX
+    this.posY = posY
+    this.buttonId = buttonId
+  }
+}
+
+function drawButton(){
+  let template = ""
+  let id = 1
+  let x = 320
+  let y = 279
+  for(let i = 0; i < 3; i++){
+    let newBtn = new Button(x + "px", y + "px")
+    y += 138
+    allBtn.push(newBtn)
+  }
+  allBtn.forEach(btn => {
+    btn.buttonId = id
+    id++
+    template += `
+    <button id="" style="margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick=""></button>
+    `
+  })
+  btnContainer.innerHTML = template
+}
+
+drawButton()
 drawHex()
+
