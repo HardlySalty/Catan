@@ -1,5 +1,6 @@
 let allHex = []
-let allBtn = []
+let homeBtns = []
+let roadBtns = []
 
 
 const canvas = document.getElementById('canvas');
@@ -32,7 +33,7 @@ function createHex(hex){
 function drawHex(){
   let x = 0
   let y = 100
-  // #region region Hex Math
+  // #region Hex Math
   for(let i = 0; i < 3; i++){
     x = 500
     y += 92
@@ -73,7 +74,7 @@ function drawHex(){
   })
 }
 
-class Button {
+class roadButton {
   constructor(posX, posY, buttonId) {
     this.posX = posX
     this.posY = posY
@@ -86,12 +87,99 @@ function drawButton(){
   let id = 1
   let x = 320
   let y = 279
+
+  //#region Home Buttons
   for(let i = 0; i < 3; i++){
-    let newBtn = new Button(x + "px", y + "px")
+    let newBtn = new roadButton(x + "px", y + "px")
     y += 138
-    allBtn.push(newBtn)
+    homeBtns.push(newBtn)
   }
-  allBtn.forEach(btn => {
+  x = 280
+  y = 212
+  for(let i = 0; i < 4; i++){
+    let newBtn = new roadButton(x + "px", y + "px")
+    y += 137
+    homeBtns.push(newBtn)
+  }
+  x = 199
+  y = 212
+  for(let i = 0; i < 4; i++){
+    let newBtn = new roadButton(x + "px", y + "px")
+    y += 137
+    homeBtns.push(newBtn)
+  }
+  x = 160 
+  y = 144
+  for(let i = 0; i < 5; i++){
+    let newBtn = new roadButton(x + "px", y + "px")
+    y += 137
+    homeBtns.push(newBtn)
+  }
+  x = 79 
+  y = 144
+  for(let i = 0; i < 5; i++){
+    let newBtn = new roadButton(x + "px", y + "px")
+    y += 137
+    homeBtns.push(newBtn)
+  }
+  x = 40 
+  y = 76
+  for(let i = 0; i < 6; i++){
+    let newBtn = new roadButton(x + "px", y + "px")
+    y += 137
+    homeBtns.push(newBtn)
+  }
+  x = -40
+  y = 76
+  for(let i = 0; i < 6; i++){
+    let newBtn = new roadButton(x + "px", y + "px")
+    y += 137
+    homeBtns.push(newBtn)
+  }
+  x = -79
+  y = 144
+  for(let i = 0; i < 5; i++){
+    let newBtn = new roadButton(x + "px", y + "px")
+    y += 137
+    homeBtns.push(newBtn)
+  }
+  x = -159
+  y = 144
+  for(let i = 0; i < 5; i++){
+    let newBtn = new roadButton(x + "px", y + "px")
+    y += 137
+    homeBtns.push(newBtn)
+  }
+  x = -199
+  y = 212
+  for(let i = 0; i < 4; i++){
+    let newBtn = new roadButton(x + "px", y + "px")
+    y += 137
+    homeBtns.push(newBtn)
+  }
+  x = -279
+  y = 212
+  for(let i = 0; i < 4; i++){
+    let newBtn = new roadButton(x + "px", y + "px")
+    y += 137
+    homeBtns.push(newBtn)
+  }
+  x = -319
+  y = 280
+  for(let i = 0; i < 3; i++){
+    let newBtn = new roadButton(x + "px", y + "px")
+    y += 137
+    homeBtns.push(newBtn)
+  }
+  //#endregion
+  
+  //#region Road Buttons
+
+
+
+  //#endregion
+
+  homeBtns.forEach(btn => {
     btn.buttonId = id
     id++
     template += `
@@ -103,4 +191,4 @@ function drawButton(){
 
 drawButton()
 drawHex()
-
+console.log(homeBtns)
