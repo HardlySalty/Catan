@@ -1,7 +1,25 @@
 button{
     position:absolute;
-    height: 18px;
-    width: 18px;
     color: rgba(240, 248, 255, 0);
     background-color: rgba(240, 248, 255, 0);
+}
+.rotateup{
+    -ms-transform: rotate(120deg);
+    -webkit-transform: rotate(120deg);
+    transform: rotate(120deg);
+  }
+.rotatedown{
+    -ms-transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    transform: rotate(60deg);
+  }
+
+#homeBtn{
+    height: 18px;
+    width: 18px;
+}
+
+#roadBtn{
+    height: 15px;
+    width: 50px;
 }
