@@ -31,41 +31,42 @@ function createHex(hex){
 }
 
 function drawHex(){
+  let new_hex
   let x = 0
   let y = 100
   // #region Hex Math
   for(let i = 0; i < 3; i++){
     x = 500
     y += 92
-    let new_hex = new Hexagon(x*1.5, y*1.5)
+    new_hex = new Hexagon(x*1.5, y*1.5)
     allHex.push(new_hex)
   }
   y = 54
   for(let i = 0; i < 4; i++){
     x = 420
     y += 92
-    let new_hex = new Hexagon(x*1.5, y*1.5)
+    new_hex = new Hexagon(x*1.5, y*1.5)
     allHex.push(new_hex)
   }
   y = 8
   for(let i = 0; i < 5; i++){
     x = 340
     y += 92
-    let new_hex = new Hexagon(x*1.5, y*1.5)
+    new_hex = new Hexagon(x*1.5, y*1.5)
     allHex.push(new_hex)
   }
   y = 54
   for(let i = 0; i < 4; i++){
     x = 260
     y += 92
-    let new_hex = new Hexagon(x*1.5, y*1.5)
+    new_hex = new Hexagon(x*1.5, y*1.5)
     allHex.push(new_hex)
   }
   y = 100
   for(let i = 0; i < 3; i++){
     x = 180
     y += 92
-    let new_hex = new Hexagon(x*1.5, y*1.5)
+    new_hex = new Hexagon(x*1.5, y*1.5)
     allHex.push(new_hex)
   }
   // #endregion
@@ -90,7 +91,7 @@ class board_button {
     let y = 279
     let cls = ''
     
-    //#region Home Buttons
+    //#region Home Buttons 119
     for(let i = 0; i < 3; i++){
       newBtn = new board_button(x + "px", y + "px")
       y += 138
@@ -338,6 +339,7 @@ function disableBtn(btn){
 function homeLog(btn){
   console.log(`HOME: ${btn} `)
 }
+
 function roadLog(btn){
   console.log(`ROAD: ${btn} `)
 }
@@ -365,3 +367,4 @@ boardBase = new board_button
 boardBase.createButton()
 boardBase.drawButton()
 drawPieces()
+
