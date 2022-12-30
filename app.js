@@ -1,15 +1,20 @@
+// #region game screen buttons and hex variables
 let allHex = []
 let homeBtns = []
 let roadBtns = []
-let players = 0
-let playerColorInterval
+// #endregion
+// #region color variables
 let redPick = ""
 let bluePick = ""
 let whitePick = ""
 let yellowPick = ""
 let greenPick = ""
 let brownPick = ""
+// #endregion
+let player_amount = 0
+let playerColorInterval = 0
 let playerNum = 1
+let players = []
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -374,8 +379,8 @@ function drawPieces(){
 }
 
 function drawColorPick(playerCount){
-  players += playerCount
-  console.log(players + "1")
+  player_amount += playerCount
+  console.log(player_amount + "1")
   
   let playerAmount = document.getElementById("playerAmount")
   let colorPick = document.getElementById("colorPick")
@@ -387,16 +392,17 @@ function drawColorPick(playerCount){
 }
 
 function playerColor(prevColor){
-  console.log(prevColor)
-  console.log(players)
+  console.log("num" + playerNum)
+  console.log(player_amount)
   let gameBoard = document.getElementById("gameBoard")
   let colorPick = document.getElementById("colorPick")
   let mainScreen = document.getElementById("mainScreen")
-  if(players == 0){
+  if(player_amount == 0){
     colorPick.style.display = "none"
     mainScreen.style.display = "none"
     gameBoard.style.display = ""
   }
+
   switch(prevColor){
     case "red":
       redPick = "none"
@@ -420,9 +426,8 @@ function playerColor(prevColor){
       console.log("default")
       break
   }
-  players--
 
-
+  player_amount--
   let colorPickTemplate = `
   <p style="font-size: 50px; margin-left: 50px;">PICK YOUR COLOR</p>     
     <div style="display: inline;">
@@ -439,12 +444,22 @@ function playerColor(prevColor){
       </div>
     </div>`
 
-    colorPick.innerHTML = colorPickTemplate
+  colorPick.innerHTML = colorPickTemplate
+  playerNum++
 
+  if(playerColorInterval != 0){
+    new_user = new player(prevColor, playerNum - 2)
+    players.push(new_user)
+  }
 
-    playerNum++
+  playerColorInterval++
+}
 
-
+class player {
+  constructor(color, turn){
+    this.color = color
+    this.turn = turn
+  }
 }
 
 drawHex() 
