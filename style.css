@@ -7,16 +7,44 @@ button{
     color: rgba(240, 248, 255, 0);
     background-color: rgba(240, 248, 255, 0);
 }
+
+.pieces{
+  color: red;
+}
+
+.pieces:hover{
+  color: darkred;
+}
+
+.pieces:active{
+  color:rgb(76, 21, 21)
+
+}
+
+.board_button{
+  background-color: rgba(240, 248, 255, 0);
+  border-color: rgba(240, 248, 255, 0);
+}
+
+.board_button:hover{
+  background-color: red;
+}
+
+.board_button:active{
+  background-color:rgb(76, 21, 21)
+}
+
 .rotateup{
     -ms-transform: rotate(120deg);
     -webkit-transform: rotate(120deg);
     transform: rotate(120deg);
-  }
+}
+
 .rotatedown{
     -ms-transform: rotate(60deg);
     -webkit-transform: rotate(60deg);
     transform: rotate(60deg);
-  }
+}
 
 #homeBtn{
     height: 18px;
@@ -26,4 +54,69 @@ button{
 #roadBtn{
     height: 15px;
     width: 50px;
+}
+
+#mainScreen{
+  background-color: silver;
+  height: 100%;
+}
+
+.playerAsk{
+  font-size: 56px;
+  width: 100%;
+  font-weight: bold;
+}
+
+#playerCheck{
+  margin-left: 34%;
+  padding-top: 5%;
+  text-align: center;
+  background-color: silver;
+  width: 600px;
+  height: 646px
+}
+
+#mainScreenInput{
+  display: block;
+}
+
+.playerCount{
+  background-color: #2600ff;
+  display: inline-block;
+  text-align: center;
+  text-overflow: clip;
+  height: 120px;
+  width: 120px;
+  font-size: 120px;
+  line-height: 20px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-left: 80px;
+  margin-right: 80px;
+  border-radius: 120px;
+  padding-bottom: 12px;
+  padding-left: 7px;
+  -webkit-text-stroke: 4px rgb(0, 0, 0);
+  -webkit-text-fill-color: #0A8C04;
+}
+
+.playerCount:hover{
+  background-color: #0D0059;
+  -webkit-text-fill-color: #075903;
+}
+
+.colorPickBtn{
+  height: 60px;
+  width: 60px;
+  border: 2px solid black;
+  border-radius: 60px;
+}
+
+.m35{
+  margin-left: 75px;
+  margin-right: 75px;
+}
+
+.w40{
+  width: 70px;
 }
