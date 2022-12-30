@@ -1,6 +1,15 @@
 let allHex = []
 let homeBtns = []
 let roadBtns = []
+let players = 0
+let playerColorInterval
+let redPick = ""
+let bluePick = ""
+let whitePick = ""
+let yellowPick = ""
+let greenPick = ""
+let brownPick = ""
+let playerNum = 1
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -300,7 +309,7 @@ class board_button {
       btn.buttonId = id
       id++
       template += `
-      <button id="homeBtn" style="margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="homeLog(${btn.buttonId})" disabled="true"></button>
+      <button id="homeBtn" class="board_button" style="display: none; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="homeLog(${btn.buttonId})" disabled="true"></button>
       `
     })
     id = 0
@@ -308,7 +317,7 @@ class board_button {
       btn.buttonId = id
       id++
       template += `
-      <button id="roadBtn" class="${btn.cls}" style="margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="roadLog(${btn.buttonId})" disabled="true"></button>
+      <button id="roadBtn" class="${btn.cls} board_button" style="display: none; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="roadLog(${btn.buttonId})" disabled="true"></button>
       `
     })
     btnContainer.innerHTML += template
@@ -321,6 +330,7 @@ function enableBtn(btn){
   const home_buton = document.querySelectorAll(btn)
   home_buton.forEach(btn => {
     btn.removeAttribute("disabled")
+    btn.style.display = ""
   })
   if(btn == "#homeBtn"){
     disableBtn('#roadBtn')
@@ -333,6 +343,7 @@ function disableBtn(btn){
   const home_buton = document.querySelectorAll(btn)
   home_buton.forEach(btn => {
     btn.setAttribute("disabled", true)
+    btn.style.display = "none"
   })
 }
 
@@ -348,18 +359,92 @@ function drawPieces(){
   let btnTemplate = ""
 
   btnTemplate = `
-      <button style=" left: 100; top: 100; z-index: 1; color:red; border:none;" onclick="enableBtn('#homeBtn')">
-        <i class="fa-solid fa-house fa-5x"></i>
+      <button style=" left: 100; top: 100; z-index: 1; border:none;" onclick="enableBtn('#homeBtn')">
+        <i class="fa-solid fa-house fa-5x pieces"></i>
       </button>
-      <button style=" left: 100; top: 200; z-index: 1; color:red; border:none;" onclick="enableBtn('#homeBtn')">
-        <i class="fa-solid fa-city fa-5x"></i>
+      <button style=" left: 100; top: 200; z-index: 1; border:none;" onclick="enableBtn('#homeBtn')">
+        <i class="fa-solid fa-city fa-5x pieces"></i>
       </button>
-      <button style=" left: 100; top: 300; z-index: 1; color:red; border:none;" onclick="enableBtn('#roadBtn')">
-        <i class="fa-solid fa-road fa-5x"></i>
+      <button style=" left: 100; top: 300; z-index: 1; border:none;" onclick="enableBtn('#roadBtn')">
+        <i class="fa-solid fa-road fa-5x pieces"></i>
       </button>
       
   `
   playerContainer.innerHTML += btnTemplate
+}
+
+function drawColorPick(playerCount){
+  players += playerCount
+  console.log(players + "1")
+  
+  let playerAmount = document.getElementById("playerAmount")
+  let colorPick = document.getElementById("colorPick")
+
+  playerAmount.style.display = "none"
+  playerAmount.setAttribute("disabled", true)
+  colorPick.style.display = ""
+  playerColor()
+}
+
+function playerColor(prevColor){
+  console.log(prevColor)
+  console.log(players)
+  let gameBoard = document.getElementById("gameBoard")
+  let colorPick = document.getElementById("colorPick")
+  let mainScreen = document.getElementById("mainScreen")
+  if(players == 0){
+    colorPick.style.display = "none"
+    mainScreen.style.display = "none"
+    gameBoard.style.display = ""
+  }
+  switch(prevColor){
+    case "red":
+      redPick = "none"
+      break
+    case "blue":
+      bluePick = "none"
+      break
+    case "white":
+      whitePick = "none"
+      break
+    case "yellow":
+      yellowPick = "none"
+      break
+    case "green":
+      greenPick = "none"
+      break
+    case "brown":
+      brownPick = "none"
+      break
+    default:
+      console.log("default")
+      break
+  }
+  players--
+
+
+  let colorPickTemplate = `
+  <p style="font-size: 50px; margin-left: 50px;">PICK YOUR COLOR</p>     
+    <div style="display: inline;">
+      <div style="margin-left: 40;">
+        <p style="font-size: 36; text-align: center; font-weight: bold">Player<br>${playerNum}</p>
+      </div>
+      <div style="margin-left: 30px;">
+        <span class="m35"><button class="colorPickBtn" style="background-color: #ff0000; display:${redPick};" onclick="playerColor('red')"></button>
+        <span class="m35"><button class="colorPickBtn" style="background-color: #0000ff; display:${bluePick};" onclick="playerColor('blue')"></button>
+        <span class="m35"><button class="colorPickBtn" style="background-color: #ffffff; display:${whitePick};" onclick="playerColor('white')"></button>
+        <span class="m35"><button class="colorPickBtn" style="background-color: #ffff00; display:${yellowPick};" onclick="playerColor('yellow')"></button>
+        <span class="m35"><button class="colorPickBtn" style="background-color: #008000; display:${greenPick};" onclick="playerColor('green')"></button>
+        <span class="m35"><button class="colorPickBtn" style="background-color: #5f3d11; display:${brownPick};" onclick="playerColor('brown')"></button>  
+      </div>
+    </div>`
+
+    colorPick.innerHTML = colorPickTemplate
+
+
+    playerNum++
+
+
 }
 
 drawHex() 
