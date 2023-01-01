@@ -1,15 +1,7 @@
-body{
-  overflow: hidden;
-}
-
 button{
     position:absolute;
     color: rgba(240, 248, 255, 0);
     background-color: rgba(240, 248, 255, 0);
-}
-
-.pieces{
-  color: red;
 }
 
 .pieces:hover{
@@ -51,6 +43,11 @@ button{
     width: 18px;
 }
 
+#occupiedBtn{
+  height: 18px;
+  width: 18px;
+}
+
 #roadBtn{
     height: 15px;
     width: 50px;
@@ -68,23 +65,36 @@ button{
 }
 
 #playerCheck{
+  display: contents;
   margin-left: 34%;
   padding-top: 5%;
   text-align: center;
   background-color: silver;
-  width: 600px;
-  height: 646px
+  width: 60%;
+  height: 60%;
+}
+
+#playerAmount{
+  background-color: silver;
 }
 
 #mainScreenInput{
   display: block;
 }
 
+#endTurnBtn{
+  left: 150;
+  top: 50;
+  color: black;
+  background-color: whitesmoke;
+  font-weight: bold;
+  font-size: 16px;
+}
+
 .playerCount{
   background-color: #2600ff;
   display: inline-block;
   text-align: center;
-  text-overflow: clip;
   height: 120px;
   width: 120px;
   font-size: 120px;
@@ -113,10 +123,18 @@ button{
 }
 
 .m35{
-  margin-left: 75px;
-  margin-right: 75px;
+  margin-left: 7%;
+  margin-right: 7%;
 }
 
 .w40{
   width: 70px;
+}
+
+.showPlayer{
+  position: absolute;
+  top: 41;
+  left: 30;
+  font-size: 30px;
+  font-weight: bold;
 }
