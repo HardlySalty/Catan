@@ -330,7 +330,7 @@ class board_button {
         `
       }else{
         template += `
-        <button id="occupiedBtn" class="board_button" style="color: ${btn.color} ; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeHouse(${btn.buttonId})""> <i class="fa-solid fa-house fa-lg pieces"></i></button>
+        <button id="occupiedHomeBtn" class="board_button" style="color: ${btn.color} ; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeHouse(${btn.buttonId})""> <i class="fa-solid fa-house fa-lg pieces"></i></button>
         `
         console.log(btn.id)
       }
@@ -340,9 +340,16 @@ class board_button {
     roadBtns.forEach(btn => {
       btn.buttonId = id
       id++
-      template += `
-      <button id="roadBtn" class="${btn.cls} board_button" style="background-color: ${btn.color}; display: none; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick=placeRoad(${btn.buttonId})" disabled="true"></button>
-      `
+      if(btn.occupied != true){
+        template += `
+        <button id="roadBtn" class="${btn.cls} board_button" style="background-color: ${btn.color}; display: none; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeRoad(${btn.buttonId})" disabled="true"></button>
+        `
+      }else{
+        template += `
+        <button id="occupiedRoadBtn" class="${btn.cls} board_button" style="background-color: ${btn.color}; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeRoad(${btn.buttonId})"></button>
+        `
+      }
+      
     })
     btnContainer.innerHTML = template
   }
@@ -464,12 +471,6 @@ function drawPieces(user) {
   `
   playerContainer.innerHTML  = btnTemplate
 }
-// let temp_array = ["yellow", "blue", "white"]
-// for(let i = 0; i < 3; i++){
-//   let temp_user = new player(temp_array[i], i)
-//   players.push(temp_user)
-// }
-
 
 function nextTurn(){
   console.log(thisTurn)
@@ -487,14 +488,16 @@ function nextTurn(){
 }
 
 function placeHouse(btnId) {
-
   btn = homeBtns[btnId]
   btn.color = curPlayer.color
   btn.occupied = true
   boardBase.drawButton()
 }
 
-function placeRoad() {
+function placeRoad(btnId) {
+  btn = roadBtns[btnId]
+  btn.color = curPlayer.color
+  btn.occupied = true
   boardBase.drawButton()
 }
 
