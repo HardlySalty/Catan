@@ -5,11 +5,11 @@ button{
 }
 
 .pieces:hover{
-  color: darkred;
+  filter: brightness(0.25);
 }
 
 .pieces:active{
-  color:rgb(76, 21, 21)
+  filter: brightness(0.1);
 
 }
 
@@ -43,14 +43,19 @@ button{
     width: 18px;
 }
 
-#occupiedBtn{
+#occupiedHomeBtn{
   height: 18px;
   width: 18px;
 }
 
 #roadBtn{
-    height: 15px;
-    width: 50px;
+  height: 15px;
+  width: 50px;
+}
+
+#occupiedRoadBtn{
+  height: 15px;
+  width: 50px;
 }
 
 #mainScreen{
