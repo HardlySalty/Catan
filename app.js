@@ -329,10 +329,13 @@ class board_button {
         <button id="homeBtn" class="board_button" style="background-color: ${btn.color} ;display: none; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeHouse(${btn.buttonId})" disabled="true"></button>
         `
       }else{
+        let btnPosX
+        console.log(btn.posX)
+        btnPosX = Number(btn.posX.replace(/[^0-9-]/g, '')) - 10 + "px"
+        console.log(btn.posX)
         template += `
-        <button id="occupiedHomeBtn" class="board_button" style="color: ${btn.color} ; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeHouse(${btn.buttonId})""> <i class="fa-solid fa-house fa-lg pieces"></i></button>
+        <button id="occupiedHomeBtn" class="board_button" style="color: ${btn.color} ; margin-left: ${btnPosX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeHouse(${btn.buttonId})""><i class="fa-solid fa-house fa-lg pieces"></i></button>
         `
-        console.log(btn.id)
       }
       
     })
@@ -473,8 +476,6 @@ function drawPieces(user) {
 }
 
 function nextTurn(){
-  console.log(thisTurn)
-  console.log(players.length)
   if(thisTurn > players.length-1){
     thisTurn = 0
   }
@@ -484,14 +485,15 @@ function nextTurn(){
   drawPieces(user)
   
   thisTurn++
-  console.log(players)
 }
 
 function placeHouse(btnId) {
   btn = homeBtns[btnId]
+  btn.disabled = true 
   btn.color = curPlayer.color
   btn.occupied = true
   boardBase.drawButton()
+
 }
 
 function placeRoad(btnId) {
