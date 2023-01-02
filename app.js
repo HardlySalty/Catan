@@ -333,7 +333,7 @@ class board_button {
         let btnPosX
         btnPosX = Number(btn.posX.replace(/[^0-9-]/g, '')) - 10 + "px"
         template += `
-        <button id="occupiedHomeBtn" class="board_button" style="color: ${btn.color} ; margin-left: ${btnPosX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeHouse(${btn.buttonId})""><i class="fa-solid fa-house fa-lg pieces"></i></button>
+        <button id="occupiedHomeBtn" class="board_button" name="${btn.color}Home" style="color: ${btn.color} ; margin-left: ${btnPosX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeHouse(${btn.buttonId})""><i class="fa-solid fa-house fa-lg pieces"></i></button>
         `
       }
       
@@ -348,7 +348,7 @@ class board_button {
         `
       }else{
         template += `
-        <button id="occupiedRoadBtn" class="${btn.cls} board_button" style="background-color: ${btn.color}; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeRoad(${btn.buttonId})"></button>
+        <button id="occupiedRoadBtn" class="${btn.cls} board_button" name="${btn.color}Road" style="background-color: ${btn.color}; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeRoad(${btn.buttonId})"></button>
         `
       }
       
@@ -540,11 +540,9 @@ function detectHomes(home){
     if(totalY < 3 && totalY > -3 && totalX < 83 && totalX > -83){
       house.disabled = true 
       house.occupied = true
-      console.log("1:  " + totalX + " " + totalY + " " + house)
     }else if(totalX < 42 && totalX > -42 && totalY < 72 && totalY > -72){
       house.disabled = true 
       house.occupied = true
-      console.log("2:  " + totalX + " " + totalY + " " + house)
     }
   })
 
