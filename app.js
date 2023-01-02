@@ -392,25 +392,26 @@ function playerColor(prevColor) {
     colorPick.style.display = "none"
     mainScreen.style.display = "none"
     gameBoard.style.display = ""
+    nextTurn()
   }
 
   switch (prevColor) {
-    case "red":
+    case "#ff0000":
       redPick = "none"
       break
-    case "blue":
+    case "#0000ff":
       bluePick = "none"
       break
-    case "white":
+    case "#ffffff":
       whitePick = "none"
       break
-    case "yellow":
+    case "#ffff00":
       yellowPick = "none"
       break
-    case "green":
+    case "#008000":
       greenPick = "none"
       break
-    case "brown":
+    case "#5f3d11":
       brownPick = "none"
       break
     default:
@@ -425,12 +426,12 @@ function playerColor(prevColor) {
         <p style="font-size: 36; text-align: center; font-weight: bold">Player<br>${playerNum}</p>
       </div>
       <div style="margin-left: 25%;">
-        <span class="m35"><button class="colorPickBtn" style="background-color: #ff0000; display:${redPick};" onclick="playerColor('red')"></button>
-        <span class="m35"><button class="colorPickBtn" style="background-color: #0000ff; display:${bluePick};" onclick="playerColor('blue')"></button>
-        <span class="m35"><button class="colorPickBtn" style="background-color: #ffffff; display:${whitePick};" onclick="playerColor('white')"></button>
-        <span class="m35"><button class="colorPickBtn" style="background-color: #ffff00; display:${yellowPick};" onclick="playerColor('yellow')"></button>
-        <span class="m35"><button class="colorPickBtn" style="background-color: #008000; display:${greenPick};" onclick="playerColor('green')"></button>
-        <span class="m35"><button class="colorPickBtn" style="background-color: #5f3d11; display:${brownPick};" onclick="playerColor('brown')"></button>
+        <span class="m35"><button class="colorPickBtn" style="background-color: #ff0000; display:${redPick};" onclick="playerColor('#ff0000')"></button>
+        <span class="m35"><button class="colorPickBtn" style="background-color: #0000ff; display:${bluePick};" onclick="playerColor('#0000ff')"></button>
+        <span class="m35"><button class="colorPickBtn" style="background-color: #ffffff; display:${whitePick};" onclick="playerColor('#ffffff')"></button>
+        <span class="m35"><button class="colorPickBtn" style="background-color: #ffff00; display:${yellowPick};" onclick="playerColor('#ffff00')"></button>
+        <span class="m35"><button class="colorPickBtn" style="background-color: #008000; display:${greenPick};" onclick="playerColor('#008000')"></button>
+        <span class="m35"><button class="colorPickBtn" style="background-color: #5f3d11; display:${brownPick};" onclick="playerColor('#5f3d11')"></button>
       </div>
     </div>`
 
@@ -459,17 +460,21 @@ function drawPieces(user) {
       <button style=" left: 100; color: ${user.color}; top: 300; z-index: 1; border:none;" onclick="enableBtn('#roadBtn')">
         <i class="fa-solid fa-road fa-5x pieces"></i>
       </button>
-      <p class="showPlayer">Player ${user.turn+1}</p>
+      <p class="showPlayer">Player ${user.turn}</p>
   `
   playerContainer.innerHTML  = btnTemplate
 }
-let temp_array = ["red", "blue", "white"]
-for(let i = 0; i < 3; i++){
-  let temp_user = new player(temp_array[i], i)
-  players.push(temp_user)
-}
-function startGame(){
-  if(thisTurn > 2){
+// let temp_array = ["yellow", "blue", "white"]
+// for(let i = 0; i < 3; i++){
+//   let temp_user = new player(temp_array[i], i)
+//   players.push(temp_user)
+// }
+
+
+function nextTurn(){
+  console.log(thisTurn)
+  console.log(players.length)
+  if(thisTurn > players.length-1){
     thisTurn = 0
   }
   
@@ -478,6 +483,7 @@ function startGame(){
   drawPieces(user)
   
   thisTurn++
+  console.log(players)
 }
 
 function placeHouse(btnId) {
@@ -497,6 +503,5 @@ drawHex()
 let boardBase = new board_button
 boardBase.createButton()
 boardBase.drawButton()
-startGame()
 
 

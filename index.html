@@ -19,7 +19,7 @@
         <input type="button" name="fourPlayer" value="4" class="playerCount" onclick="drawColorPick(4)"><br>
         <input type="button" name="fivePlayer" value="5" class="playerCount" onclick="drawColorPick(5)">
         <input type="button" name="sixPlayer" value="6" class="playerCount" onclick="drawColorPick(6)">
-      </div>
+      </div> 4
       <div id="colorPick" style="display: none;">
       </div>
     </form>
@@ -29,7 +29,7 @@
     <div id="btnContainer" width="1200" height="860" style="width: 100%; height: 0%; margin-top: -50;"></div>
     <canvas id="canvas" width="1000vw" height="770vw" style="z-index: 0;"></canvas>
     <div id="playerContainer"></div>
-    <button id="endTurnBtn" onclick="startGame()">END TURN</button>
+    <button id="endTurnBtn" onclick="nextTurn()">END TURN</button>
   </div>
   <script src="app.js"></script>
 </body>
