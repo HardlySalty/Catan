@@ -22,6 +22,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const btnContainer = document.getElementById("btnContainer")
 const playerContainer = document.getElementById("playerContainer")
+const occupiedHomes = document.querySelector("#occupiedHomeBtn")
 
 let thisTurn = 0
 
@@ -330,9 +331,7 @@ class board_button {
         `
       }else{
         let btnPosX
-        console.log(btn.posX)
         btnPosX = Number(btn.posX.replace(/[^0-9-]/g, '')) - 10 + "px"
-        console.log(btn.posX)
         template += `
         <button id="occupiedHomeBtn" class="board_button" style="color: ${btn.color} ; margin-left: ${btnPosX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeHouse(${btn.buttonId})""><i class="fa-solid fa-house fa-lg pieces"></i></button>
         `
@@ -489,9 +488,10 @@ function nextTurn(){
 
 function placeHouse(btnId) {
   btn = homeBtns[btnId]
+  detectHomes(btn)
   btn.disabled = true 
-  btn.color = curPlayer.color
   btn.occupied = true
+  btn.color = curPlayer.color
   boardBase.drawButton()
 
 }
@@ -499,8 +499,55 @@ function placeHouse(btnId) {
 function placeRoad(btnId) {
   btn = roadBtns[btnId]
   btn.color = curPlayer.color
+  btn.disabled = true 
   btn.occupied = true
   boardBase.drawButton()
+}
+
+function detectHomes(home){
+  let totalX
+  let totalY
+  let orgX = Number(home.posX.replace(/[^0-9-]/g, ''))
+  let orgY = Number(home.posY.replace(/[^0-9-]/g, ''))
+  console.log(home)
+
+  homeBtns.forEach(house => {
+    let checkX = Number(house.posX.replace(/[^0-9-]/g, ''))
+    let checkY = Number(house.posY.replace(/[^0-9-]/g, ''))
+    if(orgX > 0 && checkX > 0){
+      if(orgX >= checkX){
+        totalX = orgX - checkX
+      }else{
+        totalX = checkX - orgX
+      }
+    }else if(orgX < 0 && checkX < 0){
+      totalX = orgX - checkX
+    }else{
+      totalX = orgX - checkX
+    }
+    if(orgY > 0 && checkY > 0){
+      if(orgY >= checkY){
+        totalY = orgY - checkY
+      }else{
+        totalY = checkY - orgY
+      }
+    }else if(orgY < 0 && checkY < 0){
+      totalY = orgY - checkY
+    }else{
+      totalY = orgY - checkY
+    }
+
+    if(totalY < 3 && totalY > -3 && totalX < 83 && totalX > -83){
+      house.disabled = true 
+      house.occupied = true
+      console.log("1:  " + totalX + " " + totalY + " " + house)
+    }else if(totalX < 42 && totalX > -42 && totalY < 72 && totalY > -72){
+      house.disabled = true 
+      house.occupied = true
+      console.log("2:  " + totalX + " " + totalY + " " + house)
+    }
+  })
+
 }
 
 // FUNCTION CALLS
