@@ -488,16 +488,20 @@ function nextTurn(){
 
 function placeHouse(btnId) {
   btn = homeBtns[btnId]
-  detectHomes(btn)
-  btn.disabled = true 
-  btn.occupied = true
-  btn.color = curPlayer.color
-  boardBase.drawButton()
+  if(detectRoads(btn)){
+    detectHomes(btn)
+    btn.disabled = true 
+    btn.occupied = true
+    btn.color = curPlayer.color
+    boardBase.drawButton()
+  }
 
+  
 }
 
 function placeRoad(btnId) {
   btn = roadBtns[btnId]
+  btn.occupied = true
   btn.color = curPlayer.color
   btn.disabled = true 
   btn.occupied = true
@@ -507,13 +511,12 @@ function placeRoad(btnId) {
 function detectHomes(home){
   let totalX
   let totalY
-  let orgX = Number(home.posX.replace(/[^0-9-]/g, ''))
-  let orgY = Number(home.posY.replace(/[^0-9-]/g, ''))
-  console.log(home)
+  let orgX = Number(home.posX.replace(/[^0-9-.]/g, ''))
+  let orgY = Number(home.posY.replace(/[^0-9-.]/g, ''))
 
   homeBtns.forEach(house => {
-    let checkX = Number(house.posX.replace(/[^0-9-]/g, ''))
-    let checkY = Number(house.posY.replace(/[^0-9-]/g, ''))
+    let checkX = Number(house.posX.replace(/[^0-9-.]/g, ''))
+    let checkY = Number(house.posY.replace(/[^0-9-.]/g, ''))
     if(orgX > 0 && checkX > 0){
       if(orgX >= checkX){
         totalX = orgX - checkX
@@ -545,6 +548,54 @@ function detectHomes(home){
       house.occupied = true
     }
   })
+
+}
+
+function detectRoads(home){
+  let totalX
+  let totalY
+  let orgX = Number(home.posX.replace(/[^0-9-.]/g, ''))
+  let orgY = Number(home.posY.replace(/[^0-9-.]/g, ''))
+  let TOF = false
+
+  roadBtns.forEach(road => {
+
+    let checkX = Number(road.posX.replace(/[^0-9-.]/g, ''))
+    let checkY = Number(road.posY.replace(/[^0-9-.]/g, ''))
+
+    if(road.occupied == true){
+
+      if(orgX > 0 && checkX > 0){
+        if(orgX >= checkX){
+          totalX = orgX - checkX
+        }else{
+          totalX = checkX - orgX
+        }
+      }else if(orgX < 0 && checkX < 0){
+        totalX = orgX - checkX
+      }else{
+        totalX = orgX - checkX
+      }
+      if(orgY > 0 && checkY > 0){
+        if(orgY >= checkY){
+          totalY = orgY - checkY
+        }else{
+          totalY = checkY - orgY
+        }
+      }else if(orgY < 0 && checkY < 0){
+        totalY = orgY - checkY
+      }else{
+        totalY = orgY - checkY
+      }
+  
+      if(totalY < 5 && totalY > -5 && totalX < 60 && totalX > -60){
+        TOF = true
+      }else if(totalX < 5 && totalX > -5 && totalY < 40 && totalY > -40){
+        TOF = true   
+      } 
+    }
+  })
+  return TOF
 
 }
 
