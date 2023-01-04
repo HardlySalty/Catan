@@ -1,9 +1,9 @@
-// VARIABLES
 // #region game screen buttons and hex variables
 let allHex = []
 let homeBtns = []
 let roadBtns = []
 // #endregion
+
 // #region color variables
 let redPick = ""
 let bluePick = ""
@@ -12,23 +12,41 @@ let yellowPick = ""
 let greenPick = ""
 let brownPick = ""
 // #endregion
+
+// #region player Variables
 let player_amount = 0
 let playerColorInterval = 0
 let playerNum = 1
 let players = []
 let curPlayer
 
+// #endregion
+
+// #region HTML element variables
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const btnContainer = document.getElementById("btnContainer")
 const playerContainer = document.getElementById("playerContainer")
 const occupiedHomes = document.querySelector("#occupiedHomeBtn")
+const endTurnBtn = document.querySelector("#endTurnBtn")
+const homePieceBtn = document.querySelector("#homePiece")
+const roadPieceBtn = document.querySelector("#roadPiece")
 
+// #endregion
+
+// #region global variables
 let thisTurn = 0
+let beginTurn = 0
+const a = 2 * Math.PI / 6
+const r = 75
+let minusNum = 1
+let lastIndexCount = 0
+let beginingTurnCount = 0
+let beginingPieceCount = 1
 
-const a = 2 * Math.PI / 6;
-const r = 75;
-// FUNCTIONS & CLASSES
+// #endregion
+
+// #region  Classes
 class Hexagon {
   constructor(posX, posY) {
     this.posX = posX
@@ -46,59 +64,13 @@ class Hexagon {
 }
 
 class player {
-  constructor(color, turn) {
+  constructor(color, turn, houses, cities, roads) {
     this.color = color
     this.turn = turn
+    this.houses = houses
+    this.cities = cities
+    this.roads = roads
   }
-}
-
-function createHex(hex) {
-  hex.draw(ctx)
-}
-
-function drawHex() {
-  let new_hex
-  let x = 0
-  let y = 100
-  // #region Hex Math
-  for (let i = 0; i < 3; i++) {
-    x = 500
-    y += 92
-    new_hex = new Hexagon(x * 1.5, y * 1.5)
-    allHex.push(new_hex)
-  }
-  y = 54
-  for (let i = 0; i < 4; i++) {
-    x = 420
-    y += 92
-    new_hex = new Hexagon(x * 1.5, y * 1.5)
-    allHex.push(new_hex)
-  }
-  y = 8
-  for (let i = 0; i < 5; i++) {
-    x = 340
-    y += 92
-    new_hex = new Hexagon(x * 1.5, y * 1.5)
-    allHex.push(new_hex)
-  }
-  y = 54
-  for (let i = 0; i < 4; i++) {
-    x = 260
-    y += 92
-    new_hex = new Hexagon(x * 1.5, y * 1.5)
-    allHex.push(new_hex)
-  }
-  y = 100
-  for (let i = 0; i < 3; i++) {
-    x = 180
-    y += 92
-    new_hex = new Hexagon(x * 1.5, y * 1.5)
-    allHex.push(new_hex)
-  }
-  // #endregion
-  allHex.forEach(hex => {
-    createHex(hex)
-  })
 }
 
 class board_button {
@@ -325,38 +297,94 @@ class board_button {
     homeBtns.forEach(btn => {
       btn.buttonId = id
       id++
-      if(btn.occupied != true){
+      if (btn.occupied != true) {
         template += `
         <button id="homeBtn" class="board_button" style="background-color: ${btn.color} ;display: none; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeHouse(${btn.buttonId})" disabled="true"></button>
         `
-      }else{
+      } else {
         let btnPosX
         btnPosX = Number(btn.posX.replace(/[^0-9-]/g, '')) - 10 + "px"
         template += `
         <button id="occupiedHomeBtn" class="board_button" name="${btn.color}Home" style="color: ${btn.color} ; margin-left: ${btnPosX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeHouse(${btn.buttonId})""><i class="fa-solid fa-house fa-lg pieces"></i></button>
         `
       }
-      
+
     })
     id = 0
     roadBtns.forEach(btn => {
       btn.buttonId = id
       id++
-      if(btn.occupied != true){
+      if (btn.occupied != true) {
         template += `
         <button id="roadBtn" class="${btn.cls} board_button" style="background-color: ${btn.color}; display: none; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeRoad(${btn.buttonId})" disabled="true"></button>
         `
-      }else{
+      } else {
         template += `
         <button id="occupiedRoadBtn" class="${btn.cls} board_button" name="${btn.color}Road" style="background-color: ${btn.color}; margin-left: ${btn.posX}; margin-top: ${btn.posY}; z-index: 1;" onclick="placeRoad(${btn.buttonId})"></button>
         `
       }
-      
+
     })
     btnContainer.innerHTML = template
   }
 
 }
+
+// #endregion
+
+// #region Creating Hexagons
+function createHex(hex) {
+  hex.draw(ctx)
+}
+
+function drawHex() {
+  let new_hex
+  let x = 0
+  let y = 100
+  // #region Hex Math
+  for (let i = 0; i < 3; i++) {
+    x = 500
+    y += 92
+    new_hex = new Hexagon(x * 1.5, y * 1.5)
+    allHex.push(new_hex)
+  }
+  y = 54
+  for (let i = 0; i < 4; i++) {
+    x = 420
+    y += 92
+    new_hex = new Hexagon(x * 1.5, y * 1.5)
+    allHex.push(new_hex)
+  }
+  y = 8
+  for (let i = 0; i < 5; i++) {
+    x = 340
+    y += 92
+    new_hex = new Hexagon(x * 1.5, y * 1.5)
+    allHex.push(new_hex)
+  }
+  y = 54
+  for (let i = 0; i < 4; i++) {
+    x = 260
+    y += 92
+    new_hex = new Hexagon(x * 1.5, y * 1.5)
+    allHex.push(new_hex)
+  }
+  y = 100
+  for (let i = 0; i < 3; i++) {
+    x = 180
+    y += 92
+    new_hex = new Hexagon(x * 1.5, y * 1.5)
+    allHex.push(new_hex)
+  }
+  // #endregion
+  allHex.forEach(hex => {
+    createHex(hex)
+  })
+}
+
+// #endregion
+
+// #region enabling & disabling buttons
 
 function enableBtn(btn) {
   const home_buton = document.querySelectorAll(btn)
@@ -374,12 +402,17 @@ function enableBtn(btn) {
 function disableBtn(btn) {
   const home_buton = document.querySelectorAll(btn)
   home_buton.forEach(btn => {
-    if(btn.occupied != true){
+    if (btn.occupied != true) {
       btn.setAttribute("disabled", true)
       btn.style.display = "none"
     }
   })
 }
+
+//#endregion
+
+// #region Player picking color
+
 
 function drawColorPick(playerCount) {
   player_amount += playerCount
@@ -455,60 +488,119 @@ function playerColor(prevColor) {
   playerColorInterval++
 }
 
+// #endregion
+
+// #region next turn and drawing the pieces
 function drawPieces(user) {
 
   let btnTemplate = ""
 
   btnTemplate = `
-      <button style=" left: 100; color: ${user.color}; top: 100; z-index: 1; border:none;" onclick="enableBtn('#homeBtn')">
+      <button id="homePiece" style="left: 100; color: ${user.color}; top: 100; z-index: 1; border:none;" onclick="enableBtn('#homeBtn')">
         <i class="fa-solid fa-house fa-5x pieces"></i>
       </button>
-      <button style=" left: 100;color: ${user.color};  top: 200; z-index: 1; border:none;" onclick="enableBtn('#homeBtn')">
+      <button id="cityPiece" style="left: 100;color: ${user.color};  top: 200; z-index: 1; border:none;" onclick="enableBtn('#homeBtn')">
         <i class="fa-solid fa-city fa-5x pieces"></i>
       </button>
-      <button style=" left: 100; color: ${user.color}; top: 300; z-index: 1; border:none;" onclick="enableBtn('#roadBtn')">
+      <button id="roadPiece" style="left: 100; color: ${user.color}; top: 300; z-index: 1; border:none;" onclick="enableBtn('#roadBtn')">
         <i class="fa-solid fa-road fa-5x pieces"></i>
       </button>
       <p class="showPlayer">Player ${user.turn}</p>
   `
-  playerContainer.innerHTML  = btnTemplate
+  playerContainer.innerHTML = btnTemplate
+}
+// #endregion
+
+// #region beginging game and turns
+
+function gameSetup() {
+  if (beginingTurnCount > players.length - 1 && beginingPieceCount < 2) {
+    beginingPieceCount++
+  }
+  beginingTurnCount++
+  let user = players[beginTurn]
+  curPlayer = user
+
+  if (beginTurn > players.length - 1) {
+    user = players[beginTurn - minusNum]
+    curPlayer = user
+    if (lastIndexCount = 0) {
+      lastIndexCount++
+      minusNum--
+    }
+    if (minusNum < 3) {
+      minusNum++
+    }
+    drawPieces(user)
+    checkBeginingPlacement(user)
+  } else {
+    drawPieces(user)
+    checkBeginingPlacement(user)
+    beginTurn++
+  }
 }
 
-function nextTurn(){
-  if(thisTurn > players.length-1){
-    thisTurn = 0
+function nextTurn() {
+
+  if (players[players.length - 1].houses == undefined) {
+    players.forEach(ply => {
+      if (ply.houses == undefined) {
+        ply.houses = 0
+        ply.roads = 0
+        ply.cities = 0
+      }
+    })
+    home
+    gameSetup()
+  } else if (players[0].houses != 2 || players[0].roads != 2) {
+    gameSetup()
+  } else {
+    if (thisTurn > players.length - 1) {
+      thisTurn = 0
+    }
+    let user = players[thisTurn]
+    curPlayer = user
+    drawPieces(user)
+
+    thisTurn++
   }
-  
-  let user = players[thisTurn]
-  curPlayer = user
-  drawPieces(user)
-  
-  thisTurn++
 }
+
+// #endregion
+
+// #region place roads & houses & decting areas
 
 function placeHouse(btnId) {
   btn = homeBtns[btnId]
-  if(detectRoads(btn)){
+  if (detectRoads(btn)) {
     detectHomes(btn)
-    btn.disabled = true 
+    btn.disabled = true
     btn.occupied = true
     btn.color = curPlayer.color
+    console.log(curPlayer)
+    curPlayer.houses += 1
     boardBase.drawButton()
+    if (beginingTurnCount < (players.length * 2) + 1) {
+      checkBeginingPlacement(curPlayer)
+    }
   }
-
-  
 }
 
 function placeRoad(btnId) {
   btn = roadBtns[btnId]
+  detectPlayerRoads(btn)
   btn.occupied = true
   btn.color = curPlayer.color
-  btn.disabled = true 
-  btn.occupied = true
+  btn.disabled = true
+  console.log(curPlayer)
+  curPlayer.roads += 1
   boardBase.drawButton()
+  if (beginingTurnCount < (players.length * 2) + 1) {
+    checkBeginingPlacement(curPlayer)
+  }
 }
 
-function detectHomes(home){
+function detectHomes(home) {
   let totalX
   let totalY
   let orgX = Number(home.posX.replace(/[^0-9-.]/g, ''))
@@ -517,41 +609,41 @@ function detectHomes(home){
   homeBtns.forEach(house => {
     let checkX = Number(house.posX.replace(/[^0-9-.]/g, ''))
     let checkY = Number(house.posY.replace(/[^0-9-.]/g, ''))
-    if(orgX > 0 && checkX > 0){
-      if(orgX >= checkX){
+    if (orgX > 0 && checkX > 0) {
+      if (orgX >= checkX) {
         totalX = orgX - checkX
-      }else{
+      } else {
         totalX = checkX - orgX
       }
-    }else if(orgX < 0 && checkX < 0){
+    } else if (orgX < 0 && checkX < 0) {
       totalX = orgX - checkX
-    }else{
+    } else {
       totalX = orgX - checkX
     }
-    if(orgY > 0 && checkY > 0){
-      if(orgY >= checkY){
+    if (orgY > 0 && checkY > 0) {
+      if (orgY >= checkY) {
         totalY = orgY - checkY
-      }else{
+      } else {
         totalY = checkY - orgY
       }
-    }else if(orgY < 0 && checkY < 0){
+    } else if (orgY < 0 && checkY < 0) {
       totalY = orgY - checkY
-    }else{
+    } else {
       totalY = orgY - checkY
     }
 
-    if(totalY < 3 && totalY > -3 && totalX < 83 && totalX > -83){
-      house.disabled = true 
+    if (totalY < 3 && totalY > -3 && totalX < 83 && totalX > -83) {
+      house.disabled = true
       house.occupied = true
-    }else if(totalX < 42 && totalX > -42 && totalY < 72 && totalY > -72){
-      house.disabled = true 
+    } else if (totalX < 42 && totalX > -42 && totalY < 72 && totalY > -72) {
+      house.disabled = true
       house.occupied = true
     }
   })
 
 }
 
-function detectRoads(home){
+function detectRoads(home) {
   let totalX
   let totalY
   let orgX = Number(home.posX.replace(/[^0-9-.]/g, ''))
@@ -563,41 +655,99 @@ function detectRoads(home){
     let checkX = Number(road.posX.replace(/[^0-9-.]/g, ''))
     let checkY = Number(road.posY.replace(/[^0-9-.]/g, ''))
 
-    if(road.occupied == true){
+    if (road.occupied == true) {
 
-      if(orgX > 0 && checkX > 0){
-        if(orgX >= checkX){
+      if (orgX > 0 && checkX > 0) {
+        if (orgX >= checkX) {
           totalX = orgX - checkX
-        }else{
+        } else {
           totalX = checkX - orgX
         }
-      }else if(orgX < 0 && checkX < 0){
+      } else if (orgX < 0 && checkX < 0) {
         totalX = orgX - checkX
-      }else{
+      } else {
         totalX = orgX - checkX
       }
-      if(orgY > 0 && checkY > 0){
-        if(orgY >= checkY){
+      if (orgY > 0 && checkY > 0) {
+        if (orgY >= checkY) {
           totalY = orgY - checkY
-        }else{
+        } else {
           totalY = checkY - orgY
         }
-      }else if(orgY < 0 && checkY < 0){
+      } else if (orgY < 0 && checkY < 0) {
         totalY = orgY - checkY
-      }else{
+      } else {
         totalY = orgY - checkY
       }
-  
-      if(totalY < 5 && totalY > -5 && totalX < 60 && totalX > -60){
+
+      if (totalY < 6 && totalY > -6 && totalX < 60 && totalX > -63) {
         TOF = true
-      }else if(totalX < 5 && totalX > -5 && totalY < 40 && totalY > -40){
-        TOF = true   
-      } 
+      } else if (totalX < 6 && totalX > -6 && totalY < 40 && totalY > -43) {
+        TOF = true
+      } else if (totalX < 40 && totalX > -40 && totalY < 40 && totalY > -40) {
+        TOF = true
+      }
     }
   })
   return TOF
 
 }
+
+function detectPlayerRoads(new_road) {
+  let totalX
+  let totalY
+  let orgX = Number(new_road.posX.replace(/[^0-9-.]/g, ''))
+  let orgY = Number(new_road.posY.replace(/[^0-9-.]/g, ''))
+  let TOF = false
+
+  roadBtns.forEach(road => {
+
+    let checkX = Number(road.posX.replace(/[^0-9-.]/g, ''))
+    let checkY = Number(road.posY.replace(/[^0-9-.]/g, ''))
+
+    if (road.occupied == true) {
+
+      if (orgX > 0 && checkX > 0) {
+        if (orgX >= checkX) {
+          totalX = orgX - checkX
+        } else {
+          totalX = checkX - orgX
+        }
+      } else if (orgX < 0 && checkX < 0) {
+        totalX = orgX - checkX
+      } else {
+        totalX = orgX - checkX
+      }
+      if (orgY > 0 && checkY > 0) {
+        if (orgY >= checkY) {
+          totalY = orgY - checkY
+        } else {
+          totalY = checkY - orgY
+        }
+      } else if (orgY < 0 && checkY < 0) {
+        totalY = orgY - checkY
+      } else {
+        totalY = orgY - checkY
+      }
+
+      if (totalY < 40 && totalY > -40 && totalX < 68 && totalX > -68) {
+        TOF = true
+      }
+    }
+  })
+  return TOF
+
+}
+
+function checkBeginingPlacement(user) {
+  if (user.houses != beginingPieceCount || user.roads != beginingPieceCount) {
+    endTurnBtn.disabled = true
+  } else {
+    endTurnBtn.disabled = false
+  }
+}
+
+// #endregion
 
 // FUNCTION CALLS
 drawHex()
