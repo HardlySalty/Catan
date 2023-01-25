@@ -29,8 +29,6 @@ const btnContainer = document.getElementById("btnContainer")
 const playerContainer = document.getElementById("playerContainer")
 const occupiedHomes = document.querySelector("#occupiedHomeBtn")
 const endTurnBtn = document.querySelector("#endTurnBtn")
-const homePieceBtn = document.querySelector("#homePiece")
-const roadPieceBtn = document.querySelector("#roadPiece")
 
 // #endregion
 
@@ -43,10 +41,11 @@ let minusNum = 1
 let lastIndexCount = 0
 let beginingTurnCount = 0
 let beginingPieceCount = 1
+let beginingTOF = true
 
 // #endregion
 
-// #region  Classes
+// #region Classes
 class Hexagon {
   constructor(posX, posY) {
     this.posX = posX
@@ -514,12 +513,14 @@ function drawPieces(user) {
 // #region beginging game and turns
 
 function gameSetup() {
+  console.log("aaa")
   if (beginingTurnCount > players.length - 1 && beginingPieceCount < 2) {
     beginingPieceCount++
   }
   beginingTurnCount++
   let user = players[beginTurn]
   curPlayer = user
+
 
   if (beginTurn > players.length - 1) {
     user = players[beginTurn - minusNum]
@@ -533,11 +534,16 @@ function gameSetup() {
     }
     drawPieces(user)
     checkBeginingPlacement(user)
+    checkBeginingPieces(user)
+    defaultBeginingPieces()
   } else {
     drawPieces(user)
     checkBeginingPlacement(user)
+    checkBeginingPieces(user)
+    defaultBeginingPieces()
     beginTurn++
   }
+
 }
 
 function nextTurn() {
@@ -550,9 +556,8 @@ function nextTurn() {
         ply.cities = 0
       }
     })
-    home
     gameSetup()
-  } else if (players[0].houses != 2 || players[0].roads != 2) {
+  } else if (players[0].houses < 2 || players[0].roads < 2 ) {
     gameSetup()
   } else {
     if (thisTurn > players.length - 1) {
@@ -577,27 +582,26 @@ function placeHouse(btnId) {
     btn.disabled = true
     btn.occupied = true
     btn.color = curPlayer.color
-    console.log(curPlayer)
     curPlayer.houses += 1
     boardBase.drawButton()
-    if (beginingTurnCount < (players.length * 2) + 1) {
+    if (beginingTurnCount < (players.length * 2) + 1 && beginingTOF == true) {
       checkBeginingPlacement(curPlayer)
+      checkBeginingPieces(curPlayer)
     }
   }
 }
 
 function placeRoad(btnId) {
   btn = roadBtns[btnId]
-  detectPlayerRoads(btn)
   btn.occupied = true
   btn.color = curPlayer.color
   btn.disabled = true
-  console.log(curPlayer)
   curPlayer.roads += 1
   boardBase.drawButton()
-  if (beginingTurnCount < (players.length * 2) + 1) {
+  if (beginingTurnCount < (players.length * 2) + 1 && beginingTOF == true) {
     checkBeginingPlacement(curPlayer)
-  }
+    checkBeginingPieces(curPlayer)
+  }else{detectPlayerRoads(btn)}
 }
 
 function detectHomes(home) {
@@ -740,11 +744,46 @@ function detectPlayerRoads(new_road) {
 }
 
 function checkBeginingPlacement(user) {
+  if(players[0].houses == 2){
+    beginingTOF = false
+  }
+
   if (user.houses != beginingPieceCount || user.roads != beginingPieceCount) {
     endTurnBtn.disabled = true
   } else {
     endTurnBtn.disabled = false
   }
+}
+
+function checkBeginingPieces (user){
+  console.log(user)
+  console.log(curPlayer)
+  const homePieceBtn = document.querySelector("#homePiece")
+  const roadPieceBtn = document.querySelector("#roadPiece")
+
+  if(user.houses == beginingPieceCount && user.roads == beginingPieceCount){
+    roadPieceBtn.disabled = true
+    homePieceBtn.disabled = true
+    roadPieceBtn.style.pointerEvents = "none"
+    homePieceBtn.style.pointerEvents = "none"
+  }else if(user.houses != user.roads){
+    roadPieceBtn.disabled = true
+    homePieceBtn.disabled = false
+    roadPieceBtn.style.pointerEvents = "none"
+    homePieceBtn.style.pointerEvents = "auto"
+  }else if(user.houses == user.roads){
+    roadPieceBtn.disabled = false
+    homePieceBtn.disabled = true
+    roadPieceBtn.style.pointerEvents = "auto"
+    homePieceBtn.style.pointerEvents = "none"
+  }
+}
+
+function defaultBeginingPieces(){
+  const cityPiece = document.querySelector("#cityPiece")
+
+  cityPiece.disabled = true
+  cityPiece.style.pointerEvents = "none"
 }
 
 // #endregion
